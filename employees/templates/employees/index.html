@@ -23,7 +23,7 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-offset-4 is-4">
+                    <div class="column is-offset-3 is-6">
                         {% if messages %}
                         {% for message in messages %}
                         <p>{{ message }}</p>
@@ -36,13 +36,15 @@
                                     {{ form }}
                                 </div>
                             </div>
-                            <div class="control">
-                                <button type="submit" class="button is-info">
-                                    Search for Employee
-                                </button>
-                                <a href="{% url 'create' %}" class="button is-light">
-                                    Create New Employee
-                                </a>
+                            <div class="field is-grouped-center">
+                                <p class="control">
+                                    <button type="submit" class="button is-info">
+                                        Search by ID
+                                    </button>
+                                    <a href="{% url 'create' %}" class="button is-light">
+                                        Create New Employee
+                                    </a>
+                                </p>
                             </div>
                         </form>
                     </div>

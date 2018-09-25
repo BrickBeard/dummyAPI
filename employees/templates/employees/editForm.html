@@ -68,6 +68,16 @@
                                 </a>
                             </div>
                             {% endif %}
+                            {% if url != '/create/' %}
+                            <div class="tile is-parent is-vertical has-text-centered">
+                                <div class="tile  is-child">
+                                    <p class="subtitle">Coming Soon...</p>
+                                </div>
+                                <div class="tile is-child">
+                                    <a href="{% url 'index' %}" class="button is-info">Return</a>
+                                </div>
+                            </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
