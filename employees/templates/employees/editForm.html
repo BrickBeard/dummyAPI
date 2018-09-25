@@ -5,7 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dummy Corp - Employees</title>
+    <title>
+        {% if url == '/create/' %}
+        Dummy Corp - Create New Employee
+        {% else %}
+        Dummy Corp - Update Employee
+        {% endif %}
+
+    </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
 </head>
 
@@ -16,14 +23,29 @@
                 <h1 class="title">
                     Dummy Corp Employee Directory
                 </h1>
+                <h2 class="subtitle">
+                    {% if url == '/create/' %}
+                    Create Employee
+                    {% else %}
+                    Update Employee
+                    {% endif %}
+                </h2>
             </div>
         </div>
     </section>
     <div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
+
         <section class="section">
             <div class="container">
                 <div class="columns">
                     <div class="column is-offset-4 is-4">
+                        <p class="has-text-centered"><strong>
+                                {% if url == '/create/' %}
+                                Add New Employee
+                                {% else %}
+                                Edit Employee
+                                {% endif %}
+                            </strong></p>
                         {% if messages %}
                         {% for message in messages %}
                         <p>{{ message }}</p>
@@ -36,14 +58,16 @@
                                     {{ form }}
                                 </div>
                             </div>
+                            {% if form %}
                             <div class="control">
                                 <button type="submit" class="button is-info">
-                                    Search for Employee
+                                    Submit
                                 </button>
-                                <a href="{% url 'create' %}" class="button is-light">
-                                    Create New Employee
+                                <a href="{% url 'index' %}" class="button is-light">
+                                    Cancel
                                 </a>
                             </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -68,7 +92,7 @@
                                             <br> Salary: ${{ employeeInfo.salary }}
                                         </p>
                                         {% if employeeInfo.name %}
-                                        <a href="{% url 'update' %}">Edit Employee </a>
+                                        <a href="#">Edit Employee </a>
                                         <a href="#" style="color: red;"> Delete</a>
                                         {% endif %}
                                     </div>

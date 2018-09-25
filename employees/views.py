@@ -1,7 +1,8 @@
+from django.views.generic import View
 from django.shortcuts import render, redirect
-import requests
 from django.contrib import messages
-from .forms import idForm
+import requests
+from .forms import idForm, create_form, update_form
 
 # Create your views here.
 
@@ -16,6 +17,7 @@ def index(request):
             print(type(employee_id))
             if employee_id.isnumeric():
                 searchedEmployee = requests.get(url.format(employee_id)).json()
+                print(searchedEmployee)
                 if searchedEmployee == False:
                     messages.warning(
                         request, 'Employee does not exist.  Please try again.')
@@ -26,20 +28,35 @@ def index(request):
                     request, 'Invalid input.  You must enter a number')
                 form = idForm()
                 return render(request, 'employees/index.html', {'form': form})
-
-    else:
-        form = idForm()
-        employee_id = "25710"
-        searchedEmployee = requests.get(url.format(employee_id)).json()
+    form = idForm()
+    employee_id = "1"
+    searchedEmployee = requests.get(url.format(employee_id)).json()
     print(employee_id)
     print(searchedEmployee)
+    if searchedEmployee == False:
+        messages.warning(
+            request, 'Please enter a valid Employee ID:')
+        return render(request, 'employees/index.html', {'form': form})
+
     employeeInfo = {
         'id': employee_id,
         'name': searchedEmployee['employee_name'],
         'age': searchedEmployee['employee_age'],
         'salary': searchedEmployee['employee_salary']
     }
-
     context = {'employeeInfo': employeeInfo, 'form': form}
-
     return render(request, 'employees/index.html', context)
+
+
+def createForm(request):
+    if request.method == 'POST':
+        form = create_form(request.POST)
+    else:
+        url = request.path
+        form = create_form()
+        context = {'url': url, 'form': form}
+    return render(request, 'employees/editForm.html', context)
+
+
+def updateForm(request):
+    return render(request, 'employees/editForm.html')
