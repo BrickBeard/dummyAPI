@@ -68,7 +68,7 @@
                                             <br> Salary: ${{ employeeInfo.salary }}
                                         </p>
                                         {% if employeeInfo.name %}
-                                        <a href="{% url 'update' %}">Edit Employee </a>
+                                        <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
                                         <a href="#" style="color: red;"> Delete</a>
                                         {% endif %}
                                     </div>
