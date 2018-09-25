@@ -54,7 +54,7 @@ def createForm(request):
     if request.method == 'POST':
         form = create_form(request.POST)
         if form.is_valid():
-            name = str(request.POST['name'])
+            name = request.POST['name']
             age = request.POST['age']
             salary = request.POST['salary']
             employeeInfo = {'name': name, 'salary': salary, 'age': age}
