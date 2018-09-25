@@ -67,7 +67,7 @@ def createForm(request):
 #            response = requests.request('post', url, data=employeeInfo)
             response = requests.request(
                 'POST', url, data=data, headers=headers)
-            print(response.text[id])
+            print(response.text)
             messages.success(
                 request, 'You have succesfully added a new user')
 
@@ -77,7 +77,8 @@ def createForm(request):
         url = request.path
         form = create_form()
         context = {'url': url, 'form': form}
-    return render(request, 'employees/editForm.html', context)
+        return render(request, 'employees/editForm.html', context)
+    return render(request, 'employees/editForm.html')
 
 
 def updateForm(request, id):
