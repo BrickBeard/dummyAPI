@@ -71,7 +71,7 @@
                                         </p>
                                         {% if employeeInfo.name %}
                                         <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
-                                        <a href="#" style="color: red;"> Delete</a>
+                                        <a href="{% url 'delete' id=employeeInfo.id %}" style="color: red;"> Delete</a>
                                         {% endif %}
                                     </div>
                                 </div>

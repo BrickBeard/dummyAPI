@@ -30,7 +30,7 @@ def index(request):
                 return render(request, 'employees/index.html', {'form': form})
     else:
         form = idForm()
-        employee_id = "1"
+        employee_id = "64"
         searchedEmployee = requests.get(url.format(employee_id)).json()
         print("Index default with ID: "+employee_id)
         print(searchedEmployee)
@@ -63,11 +63,8 @@ def createForm(request):
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache'
             }
-            print(employeeInfo)
-#            response = requests.request('post', url, data=employeeInfo)
             response = requests.request(
                 'POST', url, data=data, headers=headers)
-            print(response.text)
             messages.success(
                 request, 'You have succesfully added a new user')
 
@@ -82,6 +79,43 @@ def createForm(request):
 
 
 def updateForm(request, id):
-    employee_id = request.GET.get('id')
-    print(employee_id)
-    return render(request, 'employees/editForm.html')
+    url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
+    update_url = 'http://dummy.restapiexample.com/api/v1/update/{}'
+    if request.method == 'POST':
+        form = update_form(request.POST)
+        if form.is_valid():
+            update_url = update_url.format(id)
+            name = request.POST['name']
+            age = request.POST['age']
+            salary = request.POST['salary']
+            employeeInfo = {'name': name, 'salary': salary, 'age': age}
+            data = json.dumps(employeeInfo)
+            headers = {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
+            }
+            response = requests.request(
+                'PUT', update_url, data=data, headers=headers)
+            messages.success(
+                request, 'You succesfully updated employee #{}'.format(id))
+
+    searchedEmployee = requests.get(url.format(id)).json()
+    employeeInfo = {
+        'id': id,
+        'name': searchedEmployee['employee_name'],
+        'age': searchedEmployee['employee_age'],
+        'salary': searchedEmployee['employee_salary']
+    }
+    form = update_form()
+    context = {'employeeInfo': employeeInfo, 'form': form}
+    return render(request, 'employees/editForm.html', context)
+
+
+def deleteEmployee(request, id):
+    url = 'http://dummy.restapiexample.com/api/v1/delete/{}'.format(id)
+    response = requests.request('DELETE', url)
+    print(response.text)
+    messages.success(
+        request, 'You have succesfully deleted employee #{}'.format(id))
+    form = idForm()
+    return redirect('index')
