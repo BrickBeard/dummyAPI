@@ -88,6 +88,39 @@
                     </div>
                 </div>
             </div>
+            {% if results|length > 1 %}
+            <br>
+            <br>
+            <div class="column is-offset-4 is-4">
+                <p><strong>All employees matching criteria:</strong></p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.id }}</td>
+                            <td>
+                                <a href="{% url 'update' id=result.id %}">{{ result.employee_name }}</a></td>
+                            <td>{{ result.employee_age }}</td>
+                            <td>{{ result.employee_salary }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- <ul>
+                    {% for result in results %}
+                    <li>{{ result.id }}: {{ result.employee_name }}, {{ result.employee_age }} years old</li>
+                    {% endfor %}
+                </ul>
+            </div> -->
+                {% endif %}
         </section>
     </div>
     {% load static %}

@@ -1,9 +1,9 @@
 from django import forms
 
 
-class idForm(forms.Form):
-    id_form = forms.CharField(max_length=6, widget=forms.TextInput(
-        attrs={'class': 'input', 'placeholder': 'Employee ID'}), label='')
+class searchForm(forms.Form):
+    search_query = forms.CharField(max_length=50, widget=forms.TextInput(
+        attrs={'class': 'input', 'placeholder': 'Employee ID, Name or Age'}), label='')
 
 
 class create_form(forms.Form):

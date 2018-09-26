@@ -3,33 +3,36 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 import requests
 import json
-from .forms import idForm, create_form, update_form
+from .forms import searchForm, create_form, update_form
 
 # Create your views here.
 
 
 def index(request):
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
+    url_all = 'http://dummy.restapiexample.com/api/v1/employees'
+    results = []
     if request.method == 'POST':
-        form = idForm(request.POST)
+        form = searchForm(request.POST)
+        all_employees = requests.get(url_all).json()
         if form.is_valid():
-            employee_id = request.POST['id_form']
-            print("Input ID: "+employee_id)
-            if employee_id.isnumeric():
-                searchedEmployee = requests.get(url.format(employee_id)).json()
-                print(searchedEmployee)
-                if searchedEmployee == False:
-                    messages.warning(
-                        request, 'Employee does not exist.  Please try again.')
-                    form = idForm()
-                    return render(request, 'employees/index.html', {'form': form})
-            else:
+            query = request.POST['search_query']
+            for employee in all_employees:
+                for (key, value) in employee.items():
+                    if query in value:
+                        results.append(employee)
+            print("Search query: "+query)
+            if results == []:
                 messages.warning(
-                    request, 'Invalid input.  You must enter a number')
-                form = idForm()
+                    request, 'Employee does not exist.  Please try again.')
+                form = searchForm()
                 return render(request, 'employees/index.html', {'form': form})
+
+            employee_id = results[0]['id']
+            print(employee_id)
+            searchedEmployee = requests.get(url.format(employee_id)).json()
     else:
-        form = idForm()
+        form = searchForm()
         employee_id = "64"
         searchedEmployee = requests.get(url.format(employee_id)).json()
         print("Index default with ID: "+employee_id)
@@ -37,6 +40,7 @@ def index(request):
             messages.warning(
                 request, 'Please enter a valid Employee ID:')
             return render(request, 'employees/index.html', {'form': form})
+        results.append(searchedEmployee)
 
     employeeInfo = {
         'id': employee_id,
@@ -44,7 +48,8 @@ def index(request):
         'age': searchedEmployee['employee_age'],
         'salary': searchedEmployee['employee_salary']
     }
-    context = {'employeeInfo': employeeInfo, 'form': form}
+    print(results)
+    context = {'employeeInfo': employeeInfo, 'form': form, 'results': results}
     return render(request, 'employees/index.html', context)
 
 
@@ -103,7 +108,7 @@ def updateForm(request, id):
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache'
             }
-            response = requests.request(
+            requests.request(
                 'PUT', update_url, data=data, headers=headers)
             messages.success(
                 request, 'You succesfully updated employee #{}'.format(id))
@@ -126,5 +131,5 @@ def deleteEmployee(request, id):
     print(response.text)
     messages.success(
         request, 'You have succesfully deleted employee #{}'.format(id))
-    form = idForm()
+    form = searchForm()
     return redirect('index')
