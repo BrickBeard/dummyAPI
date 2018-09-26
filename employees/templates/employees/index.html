@@ -23,10 +23,16 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-offset-3 is-6">
+                    <div class="column is-offset-3 is-6 has-text-centered">
                         {% if messages %}
                         {% for message in messages %}
                         <p>{{ message }}</p>
+                        {% if url == '/create/' %}
+                        <br>
+                        <a href="{% url 'index' %}" class="button is-info">
+                            Return
+                        </a>
+                        {% endif %}
                         {% endfor %}
                         {% endif %}
                         <form method="POST">
@@ -36,6 +42,7 @@
                                     {{ form }}
                                 </div>
                             </div>
+                            {% if form %}
                             <div class="field is-grouped-center">
                                 <p class="control">
                                     <button type="submit" class="button is-info">
@@ -46,6 +53,7 @@
                                     </a>
                                 </p>
                             </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

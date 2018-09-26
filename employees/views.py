@@ -33,7 +33,6 @@ def index(request):
         employee_id = "64"
         searchedEmployee = requests.get(url.format(employee_id)).json()
         print("Index default with ID: "+employee_id)
-        print(searchedEmployee)
         if searchedEmployee == False:
             messages.warning(
                 request, 'Please enter a valid Employee ID:')
@@ -67,8 +66,18 @@ def createForm(request):
                 'POST', url, data=data, headers=headers)
             messages.success(
                 request, 'You have succesfully added a new user')
-
-            return redirect('index')
+            search_url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
+            new_id = response.json()['id']
+            searchedEmployee = requests.get(search_url.format(new_id)).json()
+            employeeInfo = {
+                'id': new_id,
+                'name': searchedEmployee['employee_name'],
+                'age': searchedEmployee['employee_age'],
+                'salary': searchedEmployee['employee_salary']
+            }
+            url_path = request.path
+            context = {'employeeInfo': employeeInfo, 'url': url_path}
+            return render(request, 'employees/index.html', context)
 
     else:
         url = request.path
