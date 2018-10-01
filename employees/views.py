@@ -22,6 +22,7 @@ def index(request):
                     if query in value:
                         results.append(employee)
             print("Search query: "+query)
+            print(results)
             if results == []:
                 messages.warning(
                     request, 'Employee does not exist.  Please try again.')
@@ -51,6 +52,14 @@ def index(request):
     print(results)
     context = {'employeeInfo': employeeInfo, 'form': form, 'results': results}
     return render(request, 'employees/index.html', context)
+
+
+def allEmployees(request):
+    url = 'http://dummy.restapiexample.com/api/v1/employees'
+    response = requests.get(url).json()
+    url_path = request.path
+    context = {'results': response, 'url': url_path}
+    return render(request, 'employees/editForm.html', context)
 
 
 def createForm(request):
@@ -121,7 +130,8 @@ def updateForm(request, id):
         'salary': searchedEmployee['employee_salary']
     }
     form = update_form()
-    context = {'employeeInfo': employeeInfo, 'form': form}
+    url_path = request.path
+    context = {'employeeInfo': employeeInfo, 'form': form, 'url': url_path}
     return render(request, 'employees/editForm.html', context)
 
 
@@ -131,5 +141,4 @@ def deleteEmployee(request, id):
     print(response.text)
     messages.success(
         request, 'You have succesfully deleted employee #{}'.format(id))
-    form = searchForm()
     return redirect('index')
