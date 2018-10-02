@@ -1,151 +1,229 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dummy Corp - Directory</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-        crossorigin="anonymous">
-</head>
-
-<body>
-    <section class="hero">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title">
-                    Dummy Corp Employee Directory
-                </h1>
+{% extends 'employees/base.html' %}
+{% block content %}
+<div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-3 is-6 has-text-centered">
+                    <p class="has-text-centered">
+                        <strong>
+                            {% if url == '/create/' %}
+                            Add New Employee
+                            {% elif 'update' in url %}
+                            Update Employee Information
+                            {% elif url == '/employees/'%}
+                            Complete Employee Directory
+                            <br>
+                            <br>
+                            <a href="{% url 'index' %}" class="button is-info">Return</a>
+                            {% endif %}
+                        </strong>
+                    </p>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% if url == '/create/' %}
+                    <br>
+                    <a href="{% url 'index' %}" class="button is-info">
+                        Return
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    {% if form %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if url == '/create/' %}
+                        <div class="field">
+                            <div class="control is-expanded">
+                                {{ form }}
+                            </div>
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button is-info">
+                                Submit
+                            </button>
+                            <a href="{% url 'index' %}" class="button is-light">
+                                Cancel
+                            </a>
+                        </div>
+                        {% elif 'update' in url %}
+                        <div class="field">
+                            <div class="control is-expanded">
+                                {{ form }}
+                            </div>
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button is-info">
+                                Submit
+                            </button>
+                            <a href="{% url 'index' %}" class="button is-light">
+                                Cancel
+                            </a>
+                        </div>
+                        {% elif url == '/' %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                {{ form }}
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-info">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field is-grouped is-right">
+                            <div class="control is-expanded">
+                                <a href="{% url 'create' %}" class="button is-info">
+                                    Create New Employee
+                                </a>
+                            </div>
+                            <div class="control">
+                                <a href="{% url 'all' %}" class="button is-light">
+                                    All Employees
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        {% endif %}
+                    </form>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </section>
-    <div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
-        <section class="section">
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-offset-3 is-6 has-text-centered">
-                        {% if messages %}
-                        {% for message in messages %}
-                        <p>{{ message }}</p>
-                        {% if url == '/create/' %}
-                        <br>
-                        <a href="{% url 'index' %}" class="button is-info">
-                            Return
-                        </a>
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}
-                        <form method="POST">
-                            {% csrf_token %}
-                            <div class="field has-addons">
-                                <div class="control is-expanded">
-                                    {{ form }}
-                                </div>
-                                {% if form %}
-                                <div class="control">
-                                    <button type="submit" class="button is-info">
-                                        Search
-                                    </button>
-                                </div>
-                                {% endif %}
-                            </div>
-                            {% if form %}
-                            <div class="field is-grouped is-right">
-                                <div class="control is-expanded">
-                                    <a href="{% url 'create' %}" class="button is-info">
-                                        Create New Employee
-                                    </a>
-                                </div>
-                                <div class="control">
-                                    <a href="{% url 'all' %}" class="button is-light">
-                                        All Employees
-                                    </a>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-offset-4 is-4">
-                        <div class="box">
-                            <article class="media">
-                                <div class="media-left">
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <span class="title">{{ employeeInfo.name }}</span>
-                                            <br>
-                                            <span class="subtitle">ID: {{ employeeInfo.id }}</span>
-                                            <br>
-                                            <span class="subtitle">{{ employeeInfo.age }} years old</span>
-                                            <br> Salary: ${{ employeeInfo.salary }}
-                                        </p>
-                                        {% if employeeInfo.name %}
-                                        <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% if results|length > 1 %}
-            <br>
-            <br>
-            <br>
+    {% if url == '/' %}
+    <section class="section">
+        <div class="container">
             <div class="columns">
-                <div class="column is-offset-1 is-10">
-                    <p class="has-text-centered"><strong>All employees matching search criteria:</strong></p><br>
-                    <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Age</th>
-                                <th>Wage</th>
-                                <th>Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for result in results %}
-                            <tr>
-                                <td>{{ result.id }}</td>
-                                <td><strong>{{ result.employee_name }}</strong></td>
-                                <td>{{ result.employee_age }}</td>
-                                <td>{{ result.employee_salary }}</td>
-                                <td><a href="{% url 'update' id=result.id %}"><i class="far fa-edit"></i></a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <p>
-                        <a href="#top" class="button is-info">Back to Top</a>
-                    </p>
+                <div class="column is-offset-4 is-4">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">{{ employeeInfo.name }}</span>
+                                        <br>
+                                        <span class="subtitle">ID: {{ employeeInfo.id }}</span>
+                                        <br>
+                                        <span class="subtitle">{{ employeeInfo.age }} years old</span>
+                                        <br> Salary: ${{ employeeInfo.salary }}
+                                    </p>
+                                    {% if employeeInfo.name %}
+                                    <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </div>
-            {% endif %}
-        </section>
-    </div>
-    {% load static %}
-    <footer class="footer">
-        <div class=" content has-text-centered">
-            <p>
-                <strong>DummyAPI App</strong> by <a href="https://github.com/BrickBeard">Brandon Smith <img src="{% static 'employees/brick.ico' %}"
-                        alt="BrickBeard"></a>. The source code can be found on
-                <a href="https://github.com/BrickBeard/dummyAPI">Github <img width="16" src="{% static 'employees/github.png' %}"
-                        alt="github"></a>.
-            </p>
         </div>
-    </footer>
-</body>
-
-</html>
+        {% if results %}
+        {% if results|length > 1 %}
+        <br>
+        <br>
+        <br>
+        <div class="columns">
+            <div class="column is-offset-1 is-10">
+                <p class="has-text-centered"><strong>All employees matching search criteria:</strong></p><br>
+                <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Wage</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.id }}</td>
+                            <td><strong>{{ result.employee_name }}</strong></td>
+                            <td>{{ result.employee_age }}</td>
+                            <td>{{ result.employee_salary }}</td>
+                            <td><a href="{% url 'update' id=result.id %}"><i class="far fa-edit"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p>
+                    <a href="#top" class="button is-info">Back to Top</a>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </section>
+    {% elif 'update' in url %}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">{{ employeeInfo.name }}</span>
+                                        <br>
+                                        <span class="subtitle">ID: {{ employeeInfo.id }}</span>
+                                        <br>
+                                        <span class="subtitle">{{ employeeInfo.age }} years old</span>
+                                        <br> Salary: ${{ employeeInfo.salary }}
+                                    </p>
+                                    {% if employeeInfo.name %}
+                                    <!--<a href="{% url 'delete' id=employeeInfo.id %}" style="color: red;"> Delete</a> --->
+                                    <p><a href="{% url 'delete' id=employeeInfo.id %}" class="button is-danger is-outlined">
+                                            <span>Delete</span>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </a>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% elif url == '/employees/' %}
+    <div style="padding: 15px; width: 100%">
+        <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Salary</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.id }}</td>
+                    <td>{{ result.employee_name }}</td>
+                    <td>{{ result.employee_age }}</td>
+                    <td>{{ result.employee_salary }}</td>
+                    <td><a href="{% url 'update' id=result.id %}"><span class="icon is-small"><i class="far fa-edit"></i></span></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>
+            <a href="#top" class="button is-info">Back to Top</a>
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

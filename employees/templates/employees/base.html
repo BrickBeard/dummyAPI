@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {% if url %}
+        {% if url == '/create/' %}
+        Dummy Corp - Create New Employee
+        {% elif url == '/employees/' %}
+        Dummy Corp - All Employees
+        {% elif 'update' in url %}
+        Dummy Corp - Update Employee
+        {% else %}
+        Dummy Corp - Directory
+        {% endif %}
+        {% endif %}
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    Dummy Corp Employee Directory
+                </h1>
+                {% if url != '/' %}
+                <h2 class="subtitle">
+                    {% if url == '/create/' %}
+                    Create Employee
+                    {% elif 'update' in url %}
+                    Update Employee
+                    {% elif url == '/employees/'%}
+                    All Employees
+                    {% endif %}
+                </h2>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% block content %}
+
+    {% endblock %}
+    <footer class="footer">
+        <div class=" content has-text-centered">
+            <p>
+                <strong>DummyAPI App</strong> by <a href="https://github.com/BrickBeard">Brandon Smith <img src="{% static 'employees/brick.ico' %}"
+                        alt="BrickBeard"></a>. The source code can be found on
+                <a href="https://github.com/BrickBeard/dummyAPI">Github <img width="16" src="{% static 'employees/github.png' %}"
+                        alt="github"></a>.
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>

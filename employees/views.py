@@ -27,7 +27,8 @@ def index(request):
                 messages.warning(
                     request, 'Employee does not exist.  Please try again.')
                 form = searchForm()
-                return render(request, 'employees/index.html', {'form': form})
+                url_path = request.path
+                return render(request, 'employees/index.html', {'form': form, 'url': url_path})
 
             employee_id = results[0]['id']
             print("---First Returned Employee: {}".format(employee_id))
@@ -49,7 +50,9 @@ def index(request):
         'age': searchedEmployee['employee_age'],
         'salary': searchedEmployee['employee_salary']
     }
-    context = {'employeeInfo': employeeInfo, 'form': form, 'results': results}
+    url_path = request.path
+    context = {'employeeInfo': employeeInfo,
+               'form': form, 'results': results, 'url': url_path}
     return render(request, 'employees/index.html', context)
 
 
@@ -59,7 +62,7 @@ def allEmployees(request):
     url_path = request.path
     context = {'results': response, 'url': url_path}
     print('---Rendered all {} employees'.format(len(response)))
-    return render(request, 'employees/editForm.html', context)
+    return render(request, 'employees/index.html', context)
 
 
 def createForm(request):
@@ -96,12 +99,11 @@ def createForm(request):
             return render(request, 'employees/index.html', context)
 
     else:
-        url = request.path
+        url_path = request.path
         form = create_form()
-        context = {'url': url, 'form': form}
-        return render(request, 'employees/editForm.html', context)
+        context = {'url': url_path, 'form': form}
         print('---Initialized employee create form')
-    return render(request, 'employees/editForm.html')
+        return render(request, 'employees/index.html', context)
 
 
 def updateForm(request, id):
@@ -141,12 +143,12 @@ def updateForm(request, id):
     form = update_form()
     url_path = request.path
     context = {'employeeInfo': employeeInfo, 'form': form, 'url': url_path}
-    return render(request, 'employees/editForm.html', context)
+    return render(request, 'employees/index.html', context)
 
 
 def deleteEmployee(request, id):
     url = 'http://dummy.restapiexample.com/api/v1/delete/{}'.format(id)
-    response = requests.request('DELETE', url)
+    requests.request('DELETE', url)
     print("---User # {} was successfully deleted".format(id))
 
     messages.success(
