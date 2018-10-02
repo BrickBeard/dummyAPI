@@ -145,7 +145,7 @@
                             <td>{{ result.id }}</td>
                             <td><strong>{{ result.employee_name }}</strong></td>
                             <td>{{ result.employee_age }}</td>
-                            <td>{{ result.employee_salary }}</td>
+                            <td>${{ result.employee_salary }}</td>
                             <td><a href="{% url 'update' id=result.id %}"><i class="far fa-edit"></i></a></td>
                         </tr>
                         {% endfor %}
@@ -179,14 +179,7 @@
                                         <br> Salary: ${{ employeeInfo.salary }}
                                     </p>
                                     {% if employeeInfo.name %}
-                                    <!--<a href="{% url 'delete' id=employeeInfo.id %}" style="color: red;"> Delete</a> --->
-                                    <p><a href="{% url 'delete' id=employeeInfo.id %}" class="button is-danger is-outlined">
-                                            <span>Delete</span>
-                                            <span class="icon is-small">
-                                                <i class="fas fa-times"></i>
-                                            </span>
-                                        </a>
-                                    </p>
+                                    <a href="{% url 'delete' id=employeeInfo.id %}" style="color: #ff3860;"> Delete</a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -204,8 +197,8 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Age</th>
-                    <th>Salary</th>
-                    <th></th>
+                    <th>Wage</th>
+                    <th>Edit</th>
                 </tr>
             </thead>
             <tbody>
@@ -214,7 +207,7 @@
                     <td>{{ result.id }}</td>
                     <td>{{ result.employee_name }}</td>
                     <td>{{ result.employee_age }}</td>
-                    <td>{{ result.employee_salary }}</td>
+                    <td>${{ result.employee_salary }}</td>
                     <td><a href="{% url 'update' id=result.id %}"><span class="icon is-small"><i class="far fa-edit"></i></span></a></td>
                 </tr>
                 {% endfor %}
