@@ -21,8 +21,8 @@ def index(request):
                 for (key, value) in employee.items():
                     if query in value:
                         results.append(employee)
-            print("Search query: "+query)
-            print("Total Results: {}".format(len(results)))
+            print("---Search query: "+query)
+            print("---Total Results: {}".format(len(results)))
             if results == []:
                 messages.warning(
                     request, 'Employee does not exist.  Please try again.')
@@ -30,13 +30,13 @@ def index(request):
                 return render(request, 'employees/index.html', {'form': form})
 
             employee_id = results[0]['id']
-            print("First ID: {}".format(employee_id))
+            print("---First Returned Employee: {}".format(employee_id))
             searchedEmployee = requests.get(url.format(employee_id)).json()
     else:
         form = searchForm()
         employee_id = all_employees[0]['id']
         searchedEmployee = requests.get(url.format(employee_id)).json()
-        print("Index default with ID: "+employee_id)
+        print("---First Employee ID: "+employee_id)
         if searchedEmployee == False:
             messages.warning(
                 request, 'Please enter a valid Employee ID:')
@@ -58,6 +58,7 @@ def allEmployees(request):
     response = requests.get(url).json()
     url_path = request.path
     context = {'results': response, 'url': url_path}
+    print('---Rendered all {} employees'.format(len(response)))
     return render(request, 'employees/editForm.html', context)
 
 
@@ -90,6 +91,8 @@ def createForm(request):
             }
             url_path = request.path
             context = {'employeeInfo': employeeInfo, 'url': url_path}
+            print("---Creating new Employee Instance: {}, {} years, ${}".format(
+                employeeInfo['name'], employeeInfo['age'], employeeInfo['salary']))
             return render(request, 'employees/index.html', context)
 
     else:
@@ -97,6 +100,7 @@ def createForm(request):
         form = create_form()
         context = {'url': url, 'form': form}
         return render(request, 'employees/editForm.html', context)
+        print('---Initialized employee create form')
     return render(request, 'employees/editForm.html')
 
 
@@ -106,6 +110,7 @@ def updateForm(request, id):
     if request.method == 'POST':
         form = update_form(request.POST)
         if form.is_valid():
+            print("---Updating employee #{}".format(id))
             update_url = update_url.format(id)
             name = request.POST['name']
             age = request.POST['age']
@@ -120,7 +125,12 @@ def updateForm(request, id):
                 'PUT', update_url, data=data, headers=headers)
             messages.success(
                 request, 'You succesfully updated employee #{}'.format(id))
-
+            print("---Employee #{} was successfully updated.".format(id))
+    elif requests.get(url.format(id)).json() == False:
+        messages.warning(
+            request, 'I\'m sorry, that employee does not exist. Please edit an existing employee. ')
+        print('Employee #{} does not exist'.format(id))
+        return redirect('index')
     searchedEmployee = requests.get(url.format(id)).json()
     employeeInfo = {
         'id': id,
@@ -137,7 +147,8 @@ def updateForm(request, id):
 def deleteEmployee(request, id):
     url = 'http://dummy.restapiexample.com/api/v1/delete/{}'.format(id)
     response = requests.request('DELETE', url)
-    print(response.text)
+    print("---User # {} was successfully deleted".format(id))
+
     messages.success(
         request, 'You have succesfully deleted employee #{}'.format(id))
     return redirect('index')

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dummy Corp - Employees</title>
+    <title>Dummy Corp - Directory</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
         crossorigin="anonymous">
@@ -101,16 +101,17 @@
             {% if results|length > 1 %}
             <br>
             <br>
+            <br>
             <div class="columns">
-                <div class="column is-offset-2 is-8">
-                    <p><strong>All employees matching criteria:</strong></p>
+                <div class="column is-offset-1 is-10">
+                    <p class="has-text-centered"><strong>All employees matching search criteria:</strong></p><br>
                     <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
                         <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Age</th>
-                                <th>Salary</th>
+                                <th>Wage</th>
                                 <th>Edit</th>
                             </tr>
                         </thead>
