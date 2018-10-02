@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dummy Corp - Employees</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+        crossorigin="anonymous">
 </head>
 
 <body>
@@ -41,22 +43,26 @@
                                 <div class="control is-expanded">
                                     {{ form }}
                                 </div>
+                                {% if form %}
                                 <div class="control">
                                     <button type="submit" class="button is-info">
                                         Search
                                     </button>
                                 </div>
+                                {% endif %}
                             </div>
                             {% if form %}
-                            <div class="field is-grouped-center">
-                                <p class="control">
+                            <div class="field is-grouped is-right">
+                                <div class="control is-expanded">
+                                    <a href="{% url 'create' %}" class="button is-info">
+                                        Create New Employee
+                                    </a>
+                                </div>
+                                <div class="control">
                                     <a href="{% url 'all' %}" class="button is-light">
                                         All Employees
                                     </a>
-                                    <a href="{% url 'create' %}" class="button is-success">
-                                        Create New Employee
-                                    </a>
-                                </p>
+                                </div>
                             </div>
                             {% endif %}
                         </form>
@@ -96,34 +102,33 @@
             <br>
             <br>
             <div class="columns">
-                <div class="column is-offset-4 is-4">
+                <div class="column is-offset-2 is-8">
                     <p><strong>All employees matching criteria:</strong></p>
-                    <table class="table">
+                    <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
                         <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Salary</th>
+                                <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for result in results %}
                             <tr>
                                 <td>{{ result.id }}</td>
-                                <td>
-                                    <a href="{% url 'update' id=result.id %}">{{ result.employee_name }}</a></td>
+                                <td><strong>{{ result.employee_name }}</strong></td>
                                 <td>{{ result.employee_age }}</td>
                                 <td>{{ result.employee_salary }}</td>
+                                <td><a href="{% url 'update' id=result.id %}"><i class="far fa-edit"></i></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    <!-- <ul>
-                    {% for result in results %}
-                    <li>{{ result.id }}: {{ result.employee_name }}, {{ result.employee_age }} years old</li>
-                    {% endfor %}
-                </ul>-->
+                    <p>
+                        <a href="#top" class="button is-info">Back to Top</a>
+                    </p>
                 </div>
             </div>
             {% endif %}

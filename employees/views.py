@@ -11,10 +11,10 @@ from .forms import searchForm, create_form, update_form
 def index(request):
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
     url_all = 'http://dummy.restapiexample.com/api/v1/employees'
+    all_employees = requests.get(url_all).json()
     results = []
     if request.method == 'POST':
         form = searchForm(request.POST)
-        all_employees = requests.get(url_all).json()
         if form.is_valid():
             query = request.POST['search_query']
             for employee in all_employees:
@@ -22,7 +22,7 @@ def index(request):
                     if query in value:
                         results.append(employee)
             print("Search query: "+query)
-            print(results)
+            print("Total Results: {}".format(len(results)))
             if results == []:
                 messages.warning(
                     request, 'Employee does not exist.  Please try again.')
@@ -30,11 +30,11 @@ def index(request):
                 return render(request, 'employees/index.html', {'form': form})
 
             employee_id = results[0]['id']
-            print(employee_id)
+            print("First ID: {}".format(employee_id))
             searchedEmployee = requests.get(url.format(employee_id)).json()
     else:
         form = searchForm()
-        employee_id = "64"
+        employee_id = all_employees[0]['id']
         searchedEmployee = requests.get(url.format(employee_id)).json()
         print("Index default with ID: "+employee_id)
         if searchedEmployee == False:
@@ -49,7 +49,6 @@ def index(request):
         'age': searchedEmployee['employee_age'],
         'salary': searchedEmployee['employee_salary']
     }
-    print(results)
     context = {'employeeInfo': employeeInfo, 'form': form, 'results': results}
     return render(request, 'employees/index.html', context)
 
