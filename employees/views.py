@@ -5,8 +5,6 @@ import requests
 import json
 from .forms import searchForm, create_form, update_form
 
-# Create your views here.
-
 
 def index(request):
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
