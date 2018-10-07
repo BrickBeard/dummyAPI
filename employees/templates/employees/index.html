@@ -177,7 +177,7 @@
                                         <span class="subtitle">ID: {{ employeeInfo.id }}</span>
                                         <br>
                                         <span class="subtitle">{{ employeeInfo.age }} years old</span>
-                                        <br> Salary: ${{ employeeInfo.salary }}
+                                        <br> Salary: ${{ employeeInfo.salary|intcomma }}
                                     </p>
                                     {% if employeeInfo.name %}
                                     <a href="{% url 'delete' id=employeeInfo.id %}" style="color: #ff3860;"> Delete</a>
@@ -208,7 +208,7 @@
                     <td>{{ result.id }}</td>
                     <td>{{ result.employee_name }}</td>
                     <td>{{ result.employee_age }}</td>
-                    <td>${{ result.employee_salary }}</td>
+                    <td>${{ result.employee_salary|intcomma }}</td>
                     <td><a href="{% url 'update' id=result.id %}"><span class="icon is-small"><i class="far fa-edit"></i></span></a></td>
                 </tr>
                 {% endfor %}
