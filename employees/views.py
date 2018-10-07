@@ -19,6 +19,7 @@ def index(request):
                 for (key, value) in employee.items():
                     if query in value:
                         results.append(employee)
+                        results[-1]['employee_salary'] = int(results[-1]['employee_salary'])
             print("---Search query: "+query)
             print("---Total Results: {}".format(len(results)))
             if results == []:
@@ -46,7 +47,7 @@ def index(request):
         'id': employee_id,
         'name': searchedEmployee['employee_name'],
         'age': searchedEmployee['employee_age'],
-        'salary': searchedEmployee['employee_salary']
+        'salary': int(searchedEmployee['employee_salary'])
     }
     url_path = request.path
     context = {'employeeInfo': employeeInfo,
