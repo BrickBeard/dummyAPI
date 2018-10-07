@@ -1,5 +1,6 @@
 {% extends 'employees/base.html' %}
 {% block content %}
+{% load humanize %}
 <div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
     <section class="section">
         <div class="container">
@@ -109,7 +110,7 @@
                                         <span class="subtitle">ID: {{ employeeInfo.id }}</span>
                                         <br>
                                         <span class="subtitle">{{ employeeInfo.age }} years old</span>
-                                        <br> Salary: ${{ employeeInfo.salary }}
+                                        <br> Salary: ${{ employeeInfo.salary|intcomma }}
                                     </p>
                                     {% if employeeInfo.name %}
                                     <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
@@ -145,7 +146,7 @@
                             <td>{{ result.id }}</td>
                             <td><strong>{{ result.employee_name }}</strong></td>
                             <td>{{ result.employee_age }}</td>
-                            <td>${{ result.employee_salary }}</td>
+                            <td>${{ result.employee_salary|intcomma }}</td>
                             <td><a href="{% url 'update' id=result.id %}"><i class="far fa-edit"></i></a></td>
                         </tr>
                         {% endfor %}
