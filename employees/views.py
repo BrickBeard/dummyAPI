@@ -46,7 +46,7 @@ def index(request):
         'id': employee_id,
         'name': searchedEmployee['employee_name'],
         'age': searchedEmployee['employee_age'],
-        'salary': int(searchedEmployee['employee_salary'])
+        'salary': searchedEmployee['employee_salary']
     }
     url_path = request.path
     context = {'employeeInfo': employeeInfo,
