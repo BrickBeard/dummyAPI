@@ -14,10 +14,10 @@ def index(request):
     if request.method == 'POST':
         form = searchForm(request.POST)
         if form.is_valid():
-            query = request.POST['search_query']
+            query = request.POST['search_query'].lower()
             for employee in all_employees:
                 for (key, value) in employee.items():
-                    if query in value:
+                    if query in value.lower():
                         results.append(employee)
             print("---Search query: "+query)
             print("---Total Results: {}".format(len(results)))
