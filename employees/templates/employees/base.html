@@ -10,7 +10,7 @@
         {% if url %}
         {% if url == '/create/' %}
         Dummy Corp - Create New Employee
-        {% elif url == '/employees/' %}
+        {% elif '/employees/' in url %}
         Dummy Corp - All Employees
         {% elif 'update' in url %}
         Dummy Corp - Update Employee
@@ -37,7 +37,7 @@
                     Create Employee
                     {% elif 'update' in url %}
                     Update Employee
-                    {% elif url == '/employees/'%}
+                    {% elif '/employees/' in url %}
                     All Employees
                     {% endif %}
                 </h2>

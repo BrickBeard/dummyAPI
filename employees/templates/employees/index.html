@@ -12,14 +12,21 @@
                             Add New Employee
                             {% elif 'update' in url %}
                             Update Employee Information
-                            {% elif url == '/employees/'%}
+                            {% elif '/employees/' in url %}
                             Complete Employee Directory
                             <br>
                             <br>
                             <a href="{% url 'index' %}" class="button is-info">Return</a>
+
                             {% endif %}
                         </strong>
                     </p>
+                    {% if '/employees/' in url %}
+                    <br>
+                    <p>
+                        <a href="#bottom" class="button is-dark is-inverted">Jump to Bottom</a>
+                    </p>
+                    {% endif %}
                     {% if messages %}
                     {% for message in messages %}
                     <p>{{ message }}</p>
@@ -199,15 +206,15 @@
             </div>
         </div>
     </section>
-    {% elif url == '/employees/' %}
+    {% elif '/employees/' in url %}
     <div style="padding: 15px; width: 100%">
         <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Wage</th>
+                    <th><a href="{% url 'all' %}" style="text-decoration: none;">Id</a></th>
+                    <th><a href="{% url 'filtered' filter_by='name' %}" style="text-decoration: none;">Name</a></th>
+                    <th><a href="{% url 'filtered' filter_by='age' %}" style="text-decoration: none;">Age</a></th>
+                    <th><a href="{% url 'filtered' filter_by='wage' %}" style="text-decoration: none;">Wage</a></th>
                     <th>Edit</th>
                 </tr>
             </thead>
@@ -223,9 +230,12 @@
                 {% endfor %}
             </tbody>
         </table>
-        <p>
-            <a href="#top" class="button is-info">Back to Top</a>
-        </p>
+        <div class="columns">
+            <div class="column has-text-centered">
+                <a href="#top" id="bottom" class="button is-dark is-inverted">Back to Top</a>
+            </div>
+        </div>
+
     </div>
     {% endif %}
 </div>

@@ -56,10 +56,30 @@ def index(request):
 
 def allEmployees(request):
     url = 'http://dummy.restapiexample.com/api/v1/employees'
-    response = requests.get(url).json()
+    results = requests.get(url).json()
     url_path = request.path
-    context = {'results': response, 'url': url_path}
-    print('---Rendered all {} employees'.format(len(response)))
+    context = {'results': results, 'url': url_path}
+    print(f'---Rendered all {len(results)} employees by Id')
+    return render(request, 'employees/index.html', context)
+
+
+def filteredEmployees(request, filter_by):
+    url = 'http://dummy.restapiexample.com/api/v1/employees'
+    response = requests.get(url).json()
+    # print(f"Original: {response[:5]}")
+    # test_sort = sorted(response, key=lambda e: e[filter_by])
+    # print(f"Sorted: {test_sort[:5]}")
+    if filter_by == 'name':
+        results = sorted(response, key=lambda e: e["employee_name"])
+    elif filter_by == 'age':
+        results = sorted(response, key=lambda e: e["employee_age"])
+    elif filter_by == 'wage':
+        results = sorted(response, key=lambda e: e["employee_salary"])
+    else:
+        results = response
+    url_path = request.path
+    context = {'results': results, 'url': url_path}
+    print(f'---Rendered all {len(response)} employees by {filter_by}')
     return render(request, 'employees/index.html', context)
 
 
