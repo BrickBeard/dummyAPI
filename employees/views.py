@@ -107,14 +107,24 @@ def createForm(request):
 def updateForm(request, id):
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
     update_url = 'http://dummy.restapiexample.com/api/v1/update/{}'
+    searchedEmployee = requests.get(url.format(id)).json()
     if request.method == 'POST':
         form = update_form(request.POST)
         if form.is_valid():
             print("---Updating employee #{}".format(id))
             update_url = update_url.format(id)
-            name = request.POST['name']
-            age = request.POST['age']
-            salary = request.POST['salary']
+            if request.POST['name']:
+                name = request.POST['name']
+            else:
+                name = searchedEmployee['employee_name']
+            if request.POST['age']:
+                age = request.POST['age']
+            else:
+                age = searchedEmployee['employee_age']
+            if request.POST['salary']:
+                salary = request.POST['salary']
+            else:
+                salary = searchedEmployee['employee_salary']
             employeeInfo = {'name': name, 'salary': salary, 'age': age}
             data = json.dumps(employeeInfo)
             headers = {

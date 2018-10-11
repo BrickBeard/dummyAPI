@@ -54,13 +54,22 @@
                                 {{ form }}
                             </div>
                         </div>
-                        <div class="control">
-                            <button type="submit" class="button is-info">
-                                Submit
-                            </button>
-                            <a href="{% url 'index' %}" class="button is-light">
-                                Cancel
-                            </a>
+                        <div class="field is-grouped {% if messages %}is-right{% endif %}">
+                            <div class="control {% if messages %}is-expanded{% endif %}">
+                                <button type="submit" class="button is-info">
+                                    Submit
+                                </button>
+                                <a href="{% url 'index' %}" class="button is-light">
+                                    Cancel
+                                </a>
+                            </div>
+                            <div class="control">
+                                {% if messages %}
+                                <a href="{% url 'index' %}" class="button is-info">
+                                    Return
+                                </a>
+                                {% endif %}
+                            </div>
                         </div>
                         {% elif url == '/' %}
                         <div class="field has-addons">

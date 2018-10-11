@@ -17,8 +17,8 @@ class create_form(forms.Form):
 
 class update_form(forms.Form):
     name = forms.CharField(label='Name', max_length=50,
-                           widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Employee Name'}))
+                           widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Employee Name'}), required=False)
     age = forms.CharField(label='Age', max_length=3, widget=forms.TextInput(
-        attrs={'class': 'input', 'placeholder': 'Employee Age'}))
+        attrs={'class': 'input', 'placeholder': 'Employee Age'}), required=False)
     salary = forms.CharField(label='Salary', widget=forms.TextInput(
-        attrs={'class': 'input', 'placeholder': 'Employee Salary'}))
+        attrs={'class': 'input', 'placeholder': 'Employee Salary'}), required=False)
