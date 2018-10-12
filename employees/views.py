@@ -1,9 +1,9 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from .forms import searchForm, create_form, update_form
 import requests
 import json
-from .forms import searchForm, create_form, update_form
 
 
 def index(request):
@@ -74,7 +74,7 @@ class FilteredEmployees(AllEmployees):
         context = {'url': url_path, 'results': results}
         return render(request, 'employees/index.html', context=context)
 
-# ----- Original Function-Based allEmployees View -----
+# ----- Original Function-Based allEmployees Views -----
 
 # def allEmployees(request):
 #     url = 'http://dummy.restapiexample.com/api/v1/employees'
@@ -83,8 +83,6 @@ class FilteredEmployees(AllEmployees):
 #     context = {'results': results, 'url': url_path}
 #     print(f'---Rendered all {len(results)} employees by Id (FBV)')
 #     return render(request, 'employees/index.html', context)
-
-# ----- Original Function-Based filteredEmployees View -----
 
 # def filteredEmployees(request, filter_by):
 #     url = 'http://dummy.restapiexample.com/api/v1/employees'
