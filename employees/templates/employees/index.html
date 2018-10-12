@@ -1,6 +1,7 @@
 {% extends 'employees/base.html' %}
 {% block content %}
 {% load humanize %}
+{% load static %}
 <div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
     <section class="section">
         <div class="container">
@@ -29,7 +30,16 @@
                     {% endif %}
                     {% if messages %}
                     {% for message in messages %}
-                    <p>{{ message }}</p>
+                    <br>
+                    <article class="message is-small is-info">
+                        <div class="message-header">
+                            <p>Message:</p>
+                        </div>
+                        <div class="message-body">
+                            <p>{{ message }}</p>
+                        </div>
+                    </article>
+                    <!-- <p>{{ message }}</p> -->
                     {% if url == '/create/' %}
                     <br>
                     <a href="{% url 'index' %}" class="button is-info">
@@ -117,19 +127,25 @@
                     <div class="box">
                         <article class="media">
                             <div class="media-left">
+                                <figure class="image is-64x64">
+                                    <img src="{% static 'employees/big_brick.png' %}" alt="Profile Image">
+                                </figure>
                             </div>
                             <div class="media-content">
                                 <div class="content">
                                     <p>
                                         <span class="title">{{ employeeInfo.name }}</span>
                                         <br>
-                                        <span class="subtitle">ID: {{ employeeInfo.id }}</span>
+                                        <span class="subtitle">ID: <strong>{{ employeeInfo.id }}</strong></span>
                                         <br>
-                                        <span class="subtitle">{{ employeeInfo.age|intcomma }} years old</span>
-                                        <br> Salary: ${{ employeeInfo.salary|intcomma }}
+                                        Age: <strong>{{ employeeInfo.age|intcomma }}</strong>
+                                        years
+                                        <br> Salary: <strong>${{ employeeInfo.salary|intcomma }}</strong>
                                     </p>
-                                    {% if employeeInfo.name %}
-                                    <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
+                                    {% if employeeInfo.id %}
+                                    <div class="has-text-right">
+                                        <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -184,6 +200,9 @@
                     <div class="box">
                         <article class="media">
                             <div class="media-left">
+                                <figure class="image is-64x64">
+                                    <img src="{% static 'employees/big_brick.png' %}" alt="Profile Image">
+                                </figure>
                             </div>
                             <div class="media-content">
                                 <div class="content">
@@ -196,7 +215,9 @@
                                         <br> Salary: ${{ employeeInfo.salary|intcomma }}
                                     </p>
                                     {% if employeeInfo.name %}
-                                    <a href="{% url 'delete' id=employeeInfo.id %}" style="color: #ff3860;"> Delete</a>
+                                    <div class="has-text-right">
+                                        <a href="{% url 'delete' id=employeeInfo.id %}" style="color: #ff3860;"> Delete</a>
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -214,7 +235,7 @@
                     <th><a href="{% url 'all' %}" style="text-decoration: none;">Id</a></th>
                     <th><a href="{% url 'filtered' filter_by='name' %}" style="text-decoration: none;">Name</a></th>
                     <th><a href="{% url 'filtered' filter_by='age' %}" style="text-decoration: none;">Age</a></th>
-                    <th><a href="{% url 'filtered' filter_by='wage' %}" style="text-decoration: none;">Wage</a></th>
+                    <th><a href="{% url 'filtered' filter_by='salary' %}" style="text-decoration: none;">Wage</a></th>
                     <th>Edit</th>
                 </tr>
             </thead>

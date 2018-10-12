@@ -41,12 +41,12 @@ def index(request):
                 request, 'Please enter a valid Employee ID:')
             return render(request, 'employees/index.html', {'form': form})
         results.append(searchedEmployee)
-
     employeeInfo = {
         'id': employee_id,
         'name': searchedEmployee['employee_name'],
         'age': searchedEmployee['employee_age'],
-        'salary': searchedEmployee['employee_salary']
+        'salary': searchedEmployee['employee_salary'],
+        'image': searchedEmployee['profile_image'],
     }
     url_path = request.path
     context = {'employeeInfo': employeeInfo,
@@ -54,33 +54,54 @@ def index(request):
     return render(request, 'employees/index.html', context)
 
 
-def allEmployees(request):
+# Trying out Classes instead of Functions (Might not be necessary here, but practice)
+class AllEmployees(View):
     url = 'http://dummy.restapiexample.com/api/v1/employees'
     results = requests.get(url).json()
-    url_path = request.path
-    context = {'results': results, 'url': url_path}
-    print(f'---Rendered all {len(results)} employees by Id')
-    return render(request, 'employees/index.html', context)
+
+    def get(self, request):
+        url_path = request.path
+        context = {'url': url_path, 'results': self.results}
+        print(f'---Rendered all {len(self.results)} employees by Id (CBV)')
+        return render(request, 'employees/index.html', context=context)
 
 
-def filteredEmployees(request, filter_by):
-    url = 'http://dummy.restapiexample.com/api/v1/employees'
-    response = requests.get(url).json()
-    # print(f"Original: {response[:5]}")
-    # test_sort = sorted(response, key=lambda e: e[filter_by])
-    # print(f"Sorted: {test_sort[:5]}")
-    if filter_by == 'name':
-        results = sorted(response, key=lambda e: e["employee_name"])
-    elif filter_by == 'age':
-        results = sorted(response, key=lambda e: e["employee_age"])
-    elif filter_by == 'wage':
-        results = sorted(response, key=lambda e: e["employee_salary"])
-    else:
-        results = response
-    url_path = request.path
-    context = {'results': results, 'url': url_path}
-    print(f'---Rendered all {len(response)} employees by {filter_by}')
-    return render(request, 'employees/index.html', context)
+class FilteredEmployees(AllEmployees):
+    def get(self, request, filter_by):
+        url_path = request.path
+        results = sorted(
+            self.results, key=lambda e: e[f'employee_{filter_by}'])
+        context = {'url': url_path, 'results': results}
+        print(f'---Rendered all {len(results)} employees by {filter_by} (CBV)')
+        return render(request, 'employees/index.html', context=context)
+
+# ----- Original Function-Based allEmployees View -----
+
+# def allEmployees(request):
+#     url = 'http://dummy.restapiexample.com/api/v1/employees'
+#     results = requests.get(url).json()
+#     url_path = request.path
+#     context = {'results': results, 'url': url_path}
+#     print(f'---Rendered all {len(results)} employees by Id (FBV)')
+#     return render(request, 'employees/index.html', context)
+
+# ----- Original Function-Based filteredEmployees View -----
+
+# def filteredEmployees(request, filter_by):
+#     url = 'http://dummy.restapiexample.com/api/v1/employees'
+#     response = requests.get(url).json()
+#     if filter_by == 'name':
+#         results = sorted(response, key=lambda e: e["employee_name"])
+#     elif filter_by == 'age':
+#         results = sorted(response, key=lambda e: e["employee_age"])
+#     elif filter_by == 'salary':
+#         results = sorted(response, key=lambda e: e["employee_salary"])
+#     else:
+#         results = response
+#     url_path = request.path
+#     context = {'results': results, 'url': url_path}
+#     print(f'---Rendered all {len(response)} employees by {filter_by} (FBV)')
+#     return render(request, 'employees/index.html', context)
 
 
 def createForm(request):
