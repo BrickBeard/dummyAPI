@@ -30,16 +30,8 @@
                     {% endif %}
                     {% if messages %}
                     {% for message in messages %}
+                    <p>{{ message }}</p>
                     <br>
-                    <article class="message is-small is-info">
-                        <div class="message-header">
-                            <p>Message:</p>
-                        </div>
-                        <div class="message-body">
-                            <p>{{ message }}</p>
-                        </div>
-                    </article>
-                    <!-- <p>{{ message }}</p> -->
                     {% if url == '/create/' %}
                     <br>
                     <a href="{% url 'index' %}" class="button is-info">
