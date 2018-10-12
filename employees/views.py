@@ -9,6 +9,7 @@ from .forms import searchForm, create_form, update_form
 def index(request):
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
     url_all = 'http://dummy.restapiexample.com/api/v1/employees'
+    url_pic = 'https://randomuser.me/api/'
     all_employees = requests.get(url_all).json()
     results = []
     if request.method == 'POST':
@@ -40,12 +41,13 @@ def index(request):
                 request, 'Please enter a valid Employee ID:')
             return render(request, 'employees/index.html', {'form': form})
         results.append(searchedEmployee)
+    image = (requests.get(url_pic).json())['results'][0]['picture']['medium']
     employeeInfo = {
         'id': employee_id,
         'name': searchedEmployee['employee_name'],
         'age': searchedEmployee['employee_age'],
         'salary': searchedEmployee['employee_salary'],
-        'image': searchedEmployee['profile_image'],
+        'image': image,
     }
     url_path = request.path
     context = {'employeeInfo': employeeInfo,
@@ -103,6 +105,7 @@ class FilteredEmployees(AllEmployees):
 
 def createForm(request):
     url = 'http://dummy.restapiexample.com/api/v1/create'
+    url_pic = 'https://randomuser.me/api/'
     if request.method == 'POST':
         form = create_form(request.POST)
         if form.is_valid():
@@ -119,11 +122,14 @@ def createForm(request):
             search_url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
             searchedEmployee = requests.get(
                 search_url.format(response.json()['id'])).json()
+            image = (requests.get(url_pic).json())[
+                'results'][0]['picture']['medium']
             employeeInfo = {
                 'id': response.json()['id'],
                 'name': searchedEmployee['employee_name'],
                 'age': searchedEmployee['employee_age'],
-                'salary': searchedEmployee['employee_salary']
+                'salary': searchedEmployee['employee_salary'],
+                'image': image
             }
             url_path = request.path
             print(
@@ -140,6 +146,7 @@ def createForm(request):
 def updateForm(request, id):
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
     update_url = 'http://dummy.restapiexample.com/api/v1/update/{}'
+    url_pic = 'https://randomuser.me/api/'
     searchedEmployee = requests.get(url.format(id)).json()
     if request.method == 'POST':
         form = update_form(request.POST)
@@ -173,11 +180,13 @@ def updateForm(request, id):
             request, 'I\'m sorry, that employee does not exist. Please edit an existing employee. ')
         return redirect('index')
     searchedEmployee = requests.get(url.format(id)).json()
+    image = (requests.get(url_pic).json())['results'][0]['picture']['medium']
     employeeInfo = {
         'id': id,
         'name': searchedEmployee['employee_name'],
         'age': searchedEmployee['employee_age'],
-        'salary': searchedEmployee['employee_salary']
+        'salary': searchedEmployee['employee_salary'],
+        'image': image
     }
     form = update_form()
     url_path = request.path
