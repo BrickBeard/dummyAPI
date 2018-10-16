@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}
     <title>
         {% if url %}
         {% if url == '/create/' %}
@@ -19,13 +20,27 @@
         {% endif %}
         {% endif %}
     </title>
+    {% endblock %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
         crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'employees/css/forms.css' %}">
 </head>
 
 <body>
     <section class="hero">
+        {% block auth_view %}
+        <span style="position: fixed; top: 5px; right: 5px;">
+            <p>
+                {% if user.is_authenticated %}
+                Logged in as: <strong>{{ user.username }}</strong> <a href="{% url 'logout' %}" style="color: red;">Logout</a>
+                {% else %}
+                <a href="/login/" class="button is-small is-info">Login</a>
+                <a href="{% url 'register' %}" style="font-size: .75em;">Register</a>
+                {% endif %}
+            </p>
+        </span>
+        {% endblock %}
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title">
@@ -33,13 +48,19 @@
                 </h1>
                 {% if url != '/' %}
                 <h2 class="subtitle">
+                    {% block subtitle %}
                     {% if url == '/create/' %}
                     Create Employee
                     {% elif 'update' in url %}
                     Update Employee
                     {% elif '/employees/' in url %}
                     All Employees
+                    {% elif url == 'accounts/login/' %}
+                    Please Log In
+                    {% elif url == '/register/' %}
+                    Registration Form
                     {% endif %}
+                    {% endblock %}
                 </h2>
                 {% endif %}
             </div>

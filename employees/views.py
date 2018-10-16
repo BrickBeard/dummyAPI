@@ -1,6 +1,8 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
 from .forms import searchForm, create_form, update_form
 import requests
 import json
@@ -199,3 +201,20 @@ def deleteEmployee(request, id):
     messages.success(
         request, 'You have succesfully deleted employee #{}'.format(id))
     return redirect('index')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+    url = request.path
+    context = {'form': form, 'url': url}
+    return render(request, 'registration/register.html', context)

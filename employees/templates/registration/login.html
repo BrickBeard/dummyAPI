@@ -1,0 +1,66 @@
+{% extends 'employees/base.html' %}
+
+{% if form.errors %}
+<p>Your <strong>username</strong> and <strong>password</strong> did not match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p>Sorry, you can't access that page with your current account. To proceed, please login with an account that has
+    access.</p>
+{% else %}
+<p>Please login to see this page.</p>
+{% endif %}
+{% endif %}
+
+{% block title %}
+<title>Dummy Corp - Login</title>
+{% endblock %}
+
+{% block auth_view %}
+{% endblock %}
+
+
+{% block subtitle %}
+Login Form
+{% endblock %}
+
+{% block content %}
+<div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-3 is-6 has-text-centered">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                {{ form.username }}
+                                {{ form.username.css_classes }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                {{ form.password }}
+                            </div>
+                        </div>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <input type="submit" value="login" class="button is-info">
+                                <input type="hidden" name='next' value="{{ next }}">
+                            </div>
+                            <div class="control">
+                                <a href="{% url 'index' %}" class="button is-light is-out">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <p>Not registered? Click <a href="{% url 'register' %}">here</a>!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -63,7 +63,7 @@
                                 {{ form }}
                             </div>
                         </div>
-                        <div class="field is-grouped {% if messages %}is-right{% endif %}">
+                        <div class="field is-grouped">
                             <div class="control {% if messages %}is-expanded{% endif %}">
                                 <button type="submit" class="button is-info">
                                     Submit
@@ -91,12 +91,14 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="field is-grouped is-right">
+                        <div class="field is-grouped">
+                            {% if user.is_authenticated %}
                             <div class="control is-expanded">
                                 <a href="{% url 'create' %}" class="button is-info">
                                     Create New Employee
                                 </a>
                             </div>
+                            {% endif %}
                             <div class="control">
                                 <a href="{% url 'all' %}" class="button is-light">
                                     All Employees
@@ -116,6 +118,14 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-offset-4 is-4">
+                    {% if results %}
+                    {% if results|length > 1 %}
+                    {% else %}
+                    <p class="has-text-centered">
+                        <strong>First Employee in Directory:</strong>
+                    </p><br>
+                    {% endif %}
+                    {% endif %}
                     <div class="box">
                         <article class="media">
                             <div class="media-left">
@@ -134,10 +144,12 @@
                                         years
                                         <br> Salary: <strong>${{ employeeInfo.salary|intcomma }}</strong>
                                     </p>
+                                    {% if user.is_authenticated %}
                                     {% if employeeInfo.id %}
                                     <div class="has-text-right">
                                         <a href="{% url 'update' id=employeeInfo.id %}">Edit Employee </a>
                                     </div>
+                                    {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
@@ -161,7 +173,9 @@
                             <th>Name</th>
                             <th>Age</th>
                             <th>Wage</th>
+                            {% if user.is_authenticated %}
                             <th>Edit</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -171,7 +185,9 @@
                             <td><strong>{{ result.employee_name }}</strong></td>
                             <td>{{ result.employee_age|intcomma }}</td>
                             <td>${{ result.employee_salary|intcomma }}</td>
+                            {% if user.is_authenticated %}
                             <td><a href="{% url 'update' id=result.id %}"><i class="far fa-edit"></i></a></td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -221,14 +237,16 @@
     </section>
     {% elif '/employees/' in url %}
     <div style="padding: 15px; width: 100%">
-        <table class="table" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
+        <table class="table is-hoverable" style="table-layout: fixed; width: 100%; word-wrap: break-word;">
             <thead>
                 <tr>
                     <th><a href="{% url 'all' %}" style="text-decoration: none;">Id</a></th>
                     <th><a href="{% url 'filtered' filter_by='name' %}" style="text-decoration: none;">Name</a></th>
                     <th><a href="{% url 'filtered' filter_by='age' %}" style="text-decoration: none;">Age</a></th>
                     <th><a href="{% url 'filtered' filter_by='salary' %}" style="text-decoration: none;">Wage</a></th>
+                    {% if user.is_authenticated %}
                     <th>Edit</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -238,7 +256,9 @@
                     <td>{{ result.employee_name }}</td>
                     <td>{{ result.employee_age|intcomma }}</td>
                     <td>${{ result.employee_salary|intcomma }}</td>
+                    {% if user.is_authenticated %}
                     <td><a href="{% url 'update' id=result.id %}"><span class="icon is-small"><i class="far fa-edit"></i></span></a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>

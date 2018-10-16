@@ -1,0 +1,53 @@
+{% extends "employees/base.html" %}
+
+{% block title %}
+<title>Dummy Corp - Register</title>
+{% endblock %}
+
+{% block auth_view %}
+{% endblock %}
+
+{% block content %}
+<div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-3 is-6 has-text-centered">
+                    <br><br>
+                    <form method="POST" action="{% url 'register' %}" class="auth_form">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <p>There were errors found in this form. </p>
+                        {% endif %}
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control has-text-centered">
+                                {{ form.username }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control has-text-centered">
+                                {{ form.password1 }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password Confirmation</label>
+                            <div class="control has-text-centered">
+                                {{ form.password2 }}
+                            </div>
+                        </div>
+                        <div class="buttons is-centered">
+                            <input type="submit" value="Register" class="button is-info">
+                            <a href="{% url 'index' %}" class="button is-light is-out">Cancel</a>
+                        </div>
+                    </form>
+                    <br>
+                    <p>Already Registered? Login <a href="{% url 'login' %}">here</a>!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
