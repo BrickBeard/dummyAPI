@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from .forms import searchForm, create_form, update_form
+from .forms import searchForm, create_form, update_form, UserCreateForm
 import requests
 import json
 
@@ -104,6 +104,10 @@ class FilteredEmployees(AllEmployees):
 
 
 def createForm(request):
+    if not request.user.is_authenticated:
+        messages.warning(
+            request, 'You must be logged in to create new employees.')
+        return redirect('login')
     url = 'http://dummy.restapiexample.com/api/v1/create'
     url_pic = 'https://randomuser.me/api/'
     if request.method == 'POST':
@@ -144,6 +148,10 @@ def createForm(request):
 
 
 def updateForm(request, id):
+    if not request.user.is_authenticated:
+        messages.warning(
+            request, 'You must be logged in to edit employee information.')
+        return redirect('login')
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
     update_url = 'http://dummy.restapiexample.com/api/v1/update/{}'
     url_pic = 'https://randomuser.me/api/'
@@ -205,7 +213,7 @@ def deleteEmployee(request, id):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreateForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
@@ -214,7 +222,7 @@ def register(request):
             login(request, user)
             return redirect('index')
     else:
-        form = UserCreationForm()
+        form = UserCreateForm()
     url = request.path
     context = {'form': form, 'url': url}
     return render(request, 'registration/register.html', context)

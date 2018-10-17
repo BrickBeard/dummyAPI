@@ -12,8 +12,7 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-offset-3 is-6 has-text-centered">
-                    <br><br>
+                <div class="column is-offset-3 is-6 has-text-centered" id="form_column">
                     <form method="POST" action="{% url 'register' %}" class="auth_form">
                         {% csrf_token %}
 
@@ -24,6 +23,24 @@
                             <label class="label">Username</label>
                             <div class="control has-text-centered">
                                 {{ form.username }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">First Name</label>
+                            <div class="control has-text-centered">
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Last Name</label>
+                            <div class="control has-text-centered">
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control has-text-centered">
+                                {{ form.email }}
                             </div>
                         </div>
                         <div class="field">
@@ -38,6 +55,7 @@
                                 {{ form.password2 }}
                             </div>
                         </div>
+                        <br>
                         <div class="buttons is-centered">
                             <input type="submit" value="Register" class="button is-info">
                             <a href="{% url 'index' %}" class="button is-light is-out">Cancel</a>

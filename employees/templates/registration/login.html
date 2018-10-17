@@ -26,11 +26,20 @@ Login Form
 {% endblock %}
 
 {% block content %}
-<div style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
+<div class="has-text-centered" style="background-color: rgba(0, 0, 0, 0.2); height: 70%;">
+    <br>
+    Please login below:
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-offset-3 is-6 has-text-centered">
+                <div class="column is-offset-3 is-6 has-text-centered" id="form_column">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <br>
+                    <p>{{ message }}</p>
+                    <hr>
+                    {% endfor %}
+                    {% endif %}
                     <form method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
                         <div class="field">
@@ -46,9 +55,10 @@ Login Form
                                 {{ form.password }}
                             </div>
                         </div>
+                        <br>
                         <div class="field is-grouped">
                             <div class="control">
-                                <input type="submit" value="login" class="button is-info">
+                                <input type="submit" value="Login" class="button is-info">
                                 <input type="hidden" name='next' value="{{ next }}">
                             </div>
                             <div class="control">

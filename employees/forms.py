@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 
 class searchForm(forms.Form):
@@ -22,3 +24,23 @@ class update_form(forms.Form):
         attrs={'class': 'input', 'placeholder': 'Employee Age'}), required=False)
     salary = forms.CharField(label='Salary', widget=forms.TextInput(
         attrs={'class': 'input', 'placeholder': 'Employee Salary'}), required=False)
+
+
+class UserCreateForm(UserCreationForm):
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name",
+                  "email", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super(UserCreateForm, self).save(commit=False)
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user

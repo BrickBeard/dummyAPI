@@ -89,8 +89,8 @@ db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 
 
-#Password validation
-#https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+# Password validation
+# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -123,11 +123,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files
 
-# Redirect to home URL after login (Default redirects to /accounts/profile/)
+# Redirect to home URL after login and logout (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
