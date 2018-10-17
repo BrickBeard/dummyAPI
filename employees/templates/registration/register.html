@@ -60,9 +60,10 @@
                             <input type="submit" value="Register" class="button is-info">
                             <a href="{% url 'index' %}" class="button is-light is-out">Cancel</a>
                         </div>
+                        {{ form.password1.help_text }}
                     </form>
                     <br>
-                    <p>Already Registered? Login <a href="{% url 'login' %}">here</a>!</p>
+                    <p>Already Registered? <a href="{% url 'login' %}">Log In</a></p>
                 </div>
             </div>
         </div>

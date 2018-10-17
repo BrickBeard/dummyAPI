@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from .forms import searchForm, create_form, update_form, UserCreateForm
+from .forms import searchForm, create_form, update_form, UserRegisterForm
 import requests
 import json
 
@@ -220,7 +220,11 @@ def register(request):
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
+            messages.success(
+                request, f'Thanks for joining us {username}.  You can now create, update, and delete employees.')
             return redirect('index')
+        else:
+            messages.warning(request, 'Invalid input.  Please try again.')
     form = UserCreateForm()
     url = request.path
     context = {'form': form, 'url': url}
