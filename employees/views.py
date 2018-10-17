@@ -221,8 +221,7 @@ def register(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('index')
-    else:
-        form = UserCreateForm()
+    form = UserCreateForm()
     url = request.path
     context = {'form': form, 'url': url}
     return render(request, 'registration/register.html', context)
