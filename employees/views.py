@@ -1,8 +1,8 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import searchForm, create_form, update_form, UserRegisterForm
 import requests
 import json
@@ -102,7 +102,7 @@ class FilteredEmployees(AllEmployees):
 #     print(f'---Rendered all {len(response)} employees by {filter_by} (FBV)')
 #     return render(request, 'employees/index.html', context)
 
-
+@login_required
 def createForm(request):
     if not request.user.is_authenticated:
         messages.warning(
@@ -146,7 +146,7 @@ def createForm(request):
         context = {'url': url_path, 'form': form}
         return render(request, 'employees/index.html', context)
 
-
+@login_required
 def updateForm(request, id):
     if not request.user.is_authenticated:
         messages.warning(
@@ -201,7 +201,7 @@ def updateForm(request, id):
     context = {'employeeInfo': employeeInfo, 'form': form, 'url': url_path}
     return render(request, 'employees/index.html', context)
 
-
+@login_required
 def deleteEmployee(request, id):
     url = 'http://dummy.restapiexample.com/api/v1/delete/{}'.format(id)
     requests.request('DELETE', url)
@@ -213,7 +213,7 @@ def deleteEmployee(request, id):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreateForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
@@ -225,7 +225,7 @@ def register(request):
             return redirect('index')
         else:
             messages.warning(request, 'Invalid input.  Please try again.')
-    form = UserCreateForm()
+    form = UserRegisterForm()
     url = request.path
     context = {'form': form, 'url': url}
     return render(request, 'registration/register.html', context)

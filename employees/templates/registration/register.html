@@ -49,6 +49,9 @@
                                 {{ form.password1 }}
                             </div>
                         </div>
+                        <p id="password_help">
+                            {{ form.password1.help_text }}
+                        </p>
                         <div class="field">
                             <label class="label">Password Confirmation</label>
                             <div class="control has-text-centered">
@@ -60,7 +63,6 @@
                             <input type="submit" value="Register" class="button is-info">
                             <a href="{% url 'index' %}" class="button is-light is-out">Cancel</a>
                         </div>
-                        {{ form.password1.help_text }}
                     </form>
                     <br>
                     <p>Already Registered? <a href="{% url 'login' %}">Log In</a></p>

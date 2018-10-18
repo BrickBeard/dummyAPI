@@ -37,4 +37,7 @@
   #id_password2 {
     width: 100%;
   }
+  #password_help {
+    font-size: .75em;
+  }
 }
