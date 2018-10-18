@@ -12,15 +12,10 @@
 #id_password,
 #id_first_name,
 #id_last_name,
-#id_email {
-  width: 100%;
-  height: 30px;
-  border-radius: 5px;
-}
-
+#id_email,
 #id_password1,
 #id_password2 {
-  width: 80%;
+  width: 100%;
   height: 30px;
   border-radius: 5px;
 }
@@ -33,11 +28,4 @@
 
 /* ------------------   MEDIA QUERIES ------------------ */
 @media screen and (max-width: 768px) {
-  #id_password1,
-  #id_password2 {
-    width: 100%;
-  }
-  #password_help {
-    font-size: .75em;
-  }
 }

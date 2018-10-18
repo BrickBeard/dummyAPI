@@ -1,5 +1,5 @@
 {% extends "employees/base.html" %}
-
+{% load bulma_tags %}
 {% block title %}
 <title>Dummy Corp - Register</title>
 {% endblock %}
@@ -19,7 +19,8 @@
                         {% if form.errors %}
                         <p>There were errors found in this form. </p>
                         {% endif %}
-                        <div class="field">
+                        {{ form|bulma }}
+                        <!-- <div class="field">
                             <label class="label">Username*</label>
                             <div class="control has-text-centered">
                                 {{ form.username }}
@@ -57,7 +58,7 @@
                             <div class="control has-text-centered">
                                 {{ form.password2 }}
                             </div>
-                        </div>
+                        </div>-->
                         <br>
                         <div class="buttons is-centered">
                             <input type="submit" value="Register" class="button is-info">

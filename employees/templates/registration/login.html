@@ -1,5 +1,5 @@
 {% extends 'employees/base.html' %}
-
+{% load bulma_tags %}
 {% if form.errors %}
 <p>Your <strong>username</strong> and <strong>password</strong> did not match. Please try again.</p>
 {% endif %}
@@ -66,6 +66,8 @@ Login Form
                     </form>
                     <br>
                     <p>Not registered? Click <a href="{% url 'register' %}">here</a>!</p>
+
+
                 </div>
             </div>
         </div>
