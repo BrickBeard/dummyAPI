@@ -17,14 +17,14 @@ def index(request):
     if request.method == 'POST':
         form = searchForm(request.POST)
         if form.is_valid():
-            query = request.POST['search_query'].lower()
+            query = request.POST['search_query'].lower().strip()
             for employee in all_employees:
                 for (key, value) in employee.items():
                     if query in value.lower():
                         results.append(employee)
             if results == []:
                 messages.warning(
-                    request, 'Employee does not exist.  Please try again.')
+                    request, 'Employee does not exist.  Please try again.', fail_silently=True,)
                 form = searchForm()
                 url_path = request.path
                 return render(request, 'employees/index.html', {'form': form, 'url': url_path})
@@ -40,7 +40,7 @@ def index(request):
         searchedEmployee = requests.get(url.format(employee_id)).json()
         if searchedEmployee == False:
             messages.warning(
-                request, 'Please enter a valid Employee ID:')
+                request, 'Please enter a valid Employee ID:', fail_silently=True,)
             return render(request, 'employees/index.html', {'form': form})
         results.append(searchedEmployee)
     image = (requests.get(url_pic).json())['results'][0]['picture']['medium']
@@ -102,11 +102,12 @@ class FilteredEmployees(AllEmployees):
 #     print(f'---Rendered all {len(response)} employees by {filter_by} (FBV)')
 #     return render(request, 'employees/index.html', context)
 
+
 @login_required
 def createForm(request):
     if not request.user.is_authenticated:
         messages.warning(
-            request, 'You must be logged in to create new employees.')
+            request, 'You must be logged in to create new employees.', fail_silently=True,)
         return redirect('login')
     url = 'http://dummy.restapiexample.com/api/v1/create'
     url_pic = 'https://randomuser.me/api/'
@@ -122,7 +123,7 @@ def createForm(request):
             response = requests.request(
                 'POST', url, data=data, headers=headers)
             messages.success(
-                request, 'You have succesfully added a new user')
+                request, 'You have succesfully added a new user', fail_silently=True,)
             search_url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
             searchedEmployee = requests.get(
                 search_url.format(response.json()['id'])).json()
@@ -146,11 +147,12 @@ def createForm(request):
         context = {'url': url_path, 'form': form}
         return render(request, 'employees/index.html', context)
 
+
 @login_required
 def updateForm(request, id):
     if not request.user.is_authenticated:
         messages.warning(
-            request, 'You must be logged in to edit employee information.')
+            request, 'You must be logged in to edit employee information.', fail_silently=True,)
         return redirect('login')
     url = 'http://dummy.restapiexample.com/api/v1/employee/{}'
     update_url = 'http://dummy.restapiexample.com/api/v1/update/{}'
@@ -181,11 +183,11 @@ def updateForm(request, id):
             requests.request(
                 'PUT', update_url, data=data, headers=headers)
             messages.success(
-                request, 'You succesfully updated employee #{}'.format(id))
+                request, 'You succesfully updated employee #{}'.format(id), fail_silently=True,)
             print("---Employee #{} was successfully updated.".format(id))
     elif requests.get(url.format(id)).json() == False:
         messages.warning(
-            request, 'I\'m sorry, that employee does not exist. Please edit an existing employee. ')
+            request, 'I\'m sorry, that employee does not exist. Please edit an existing employee. ', fail_silently=True,)
         return redirect('index')
     searchedEmployee = requests.get(url.format(id)).json()
     image = (requests.get(url_pic).json())['results'][0]['picture']['medium']
@@ -201,31 +203,37 @@ def updateForm(request, id):
     context = {'employeeInfo': employeeInfo, 'form': form, 'url': url_path}
     return render(request, 'employees/index.html', context)
 
+
 @login_required
 def deleteEmployee(request, id):
     url = 'http://dummy.restapiexample.com/api/v1/delete/{}'.format(id)
     requests.request('DELETE', url)
     print("---User # {} was successfully deleted".format(id))
     messages.success(
-        request, 'You have succesfully deleted employee #{}'.format(id))
+        request, 'You have succesfully deleted employee #{}'.format(id), fail_silently=True,)
     return redirect('index')
 
 
 def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(
-                request, f'Thanks for joining us {username}.  You can now create, update, and delete employees.')
-            return redirect('index')
-        else:
-            messages.warning(request, 'Invalid input.  Please try again.')
-    form = UserRegisterForm()
-    url = request.path
-    context = {'form': form, 'url': url}
-    return render(request, 'registration/register.html', context)
+    if not request.user.is_authenticated:
+        if request.method == 'POST':
+            form = UserRegisterForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password1']
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                messages.success(
+                    request, f'Thanks for joining us {username}.  You can now create, update, and delete employees.', fail_silently=True,)
+                return redirect('index')
+            else:
+                messages.warning(
+                    request, 'Invalid input.  Please try again.', fail_silently=True,)
+        form = UserRegisterForm()
+        url = request.path
+        context = {'form': form, 'url': url}
+        return render(request, 'registration/register.html', context)
+    messages.success(request, 'You are already logged in!',
+                     fail_silently=True,)
+    return redirect('index')
