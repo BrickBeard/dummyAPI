@@ -36,7 +36,7 @@
                 Logged in as: <strong>{{ user.username }}</strong> <a href="{% url 'logout' %}" class="button is-small is-danger">Logout</a>
                 {% else %}
                 <a href="{% url 'register' %}" style="font-size: .75em;">Register</a>
-                <a href="/login/" class="button is-small is-success">Login</a>
+                <a href="/login/" class="button is-small is-info">Login</a>
                 {% endif %}
             </p>
         </span>
