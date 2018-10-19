@@ -135,3 +135,6 @@ LOGIN_URL = '/login/'
 # Redirect to home URL after login and logout (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# Session length
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

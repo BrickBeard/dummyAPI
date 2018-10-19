@@ -55,11 +55,15 @@ def test_update_form(name, age, salary):
 # --------------- Register Form ---------------
 
 
-# @pytest.mark.parametrize(
-#     'username, first_name, last_name, email, password1, password2',
-#     [('test', None, None, None, '1234five', '1234five')]
-# )
-# def test_register_form(username, first_name, last_name, email, password1, password2):
-#     form = UserRegisterForm(data={'username': username, 'first_name': first_name,
-#                                   'last_name': last_name, 'email': email, 'password1': password1, 'password2': password2})
-#     assert form.is_valid()
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    'username, first_name, last_name, email, password1, password2',
+    [('pytest', '', '', '', '1234five6', '1234five6'),
+     ('pytest', 'py', 'test', 'py@te.st', '1234five6', '1234five6'),
+     ('123', '123', '123', 'py@te.st', '1234five6', '1234five6'),
+     (123, 123, 123, 'py@te.st', '1234five6', '1234five6')]
+)
+def test_register_form(username, first_name, last_name, email, password1, password2):
+    form = UserRegisterForm(data={'username': username, 'first_name': first_name,
+                                  'last_name': last_name, 'email': email, 'password1': password1, 'password2': password2})
+    assert form.is_valid()
