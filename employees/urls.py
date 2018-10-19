@@ -12,5 +12,5 @@ urlpatterns = [
     path('employees/<str:filter_by>/',
          views.FilteredEmployees.as_view(), name='filtered'),
     path('register/', views.register, name="register"),
-    path('login/', auth_views.LoginView.as_view(), name="login")
+    path('login/', views.loginForm, name="login_view")
 ]

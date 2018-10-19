@@ -2,6 +2,7 @@ from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import searchForm, create_form, update_form, UserRegisterForm
 import requests
@@ -233,30 +234,34 @@ def register(request):
         form = UserRegisterForm()
         url = request.path
         context = {'form': form, 'url': url}
-        return render(request, 'registration/register.html', context)
+        return render(request, 'authentication/register.html', context)
     messages.success(request, 'You are already logged in!',
                      fail_silently=True,)
     return redirect('index')
 
-    def login(request):
-        if request.user.is_authenticated():
+
+def loginForm(request):
+    # if request.user.is_authenticated():
+    #     messages.success(
+    #         request, 'You are already logged in!', fail_silently=True,)
+    #     return redirect('index')
+
+    context = {}
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
             messages.success(
-                request, 'You are already logged in!', fail_silently=True,)
+                request, 'You have successfully logged in!', fail_silently=True,)
             return redirect('index')
 
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user = authenticate(username=username, password=password)
+        else:
+            messages.success(
+                request, 'Oops! Wrong username or password. Try again.', fail_silently=True,)
 
-            if user is not None:
-                login(request, user)
-                messages.success(
-                    request, 'You have successfully logged in!', fail_silently=True,)
-                return redirect('index')
-
-            else:
-                messages.success(
-                    request, 'Oops! Wrong username or password. Try again.', fail_silently=True,)
-
-        return render(request, 'registration/login.html')
+    form = AuthenticationForm()
+    context = {'form': form}
+    return render(request, 'authentication/login.html', context)

@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(d727-s7$+i(mx-%ge67#6jdek&7)-$5cttf^nx-uyz_8&!6m#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,6 +128,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files
+
+# Login URL
+LOGIN_URL = '/login/'
 
 # Redirect to home URL after login and logout (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
