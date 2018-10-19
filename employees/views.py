@@ -237,3 +237,26 @@ def register(request):
     messages.success(request, 'You are already logged in!',
                      fail_silently=True,)
     return redirect('index')
+
+    def login(request):
+        if request.user.is_authenticated():
+            messages.success(
+                request, 'You are already logged in!', fail_silently=True,)
+            return redirect('index')
+
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                messages.success(
+                    request, 'You have successfully logged in!', fail_silently=True,)
+                return redirect('index')
+
+            else:
+                messages.success(
+                    request, 'Oops! Wrong username or password. Try again.', fail_silently=True,)
+
+        return render(request, 'registration/login.html')
