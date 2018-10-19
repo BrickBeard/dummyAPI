@@ -245,8 +245,6 @@ def loginForm(request):
     #     messages.success(
     #         request, 'You are already logged in!', fail_silently=True,)
     #     return redirect('index')
-
-    context = {}
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
