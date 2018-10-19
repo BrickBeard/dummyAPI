@@ -48,4 +48,4 @@ class TestUrls:
 
     def test_login_url(self):
         path = reverse('login_view')
-        assert resolve(path).view_name == 'loginForm'
+        assert resolve(path).view_name == 'login_view'
