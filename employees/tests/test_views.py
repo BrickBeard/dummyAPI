@@ -155,7 +155,7 @@ class TestViews:
     def test_updateform_view_authenticated(self):
         url_all = 'http://dummy.restapiexample.com/api/v1/employees'
         employees = requests.get(url_all).json()
-        employee_id = employees[0]['id']
+        employee_id = employees[-1]['id']
         path = reverse('update', kwargs={'id': employee_id})
         request = RequestFactory().get(path)
         request.user = mixer.blend(User)
@@ -166,7 +166,7 @@ class TestViews:
     def test_updateform_nonexist_view_authenticated(self):
         url_all = 'http://dummy.restapiexample.com/api/v1/employees'
         employees = requests.get(url_all).json()
-        employee_id = int(employees[0]['id'])-1
+        employee_id = int(employees[-1]['id'])-1
         path = reverse('update', kwargs={'id': employee_id})
         request = RequestFactory().get(path)
         request.user = mixer.blend(User)
@@ -177,7 +177,7 @@ class TestViews:
     def test_updateform_view_post_authenticated(self):
         url_all = 'http://dummy.restapiexample.com/api/v1/employees'
         employees = requests.get(url_all).json()
-        employee_id = employees[0]['id']
+        employee_id = employees[-1]['id']
         data = {'csrfmiddlewaretoken': ['bUx1U1ymyRBdmSuaBTphToowb58owRPCk0Vd0lp2dxifcDhCCvT2Ka33TJjeq56O'], 'name': [
             'pytest'], 'age': [''], 'salary': ['']}
         path = reverse('update', kwargs={'id': employee_id})
