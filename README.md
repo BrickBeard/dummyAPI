@@ -23,9 +23,16 @@
 5. `python manage.py migrate && python manage.py createsuperuser` (Follow the prompts)
 6. And you're good to go! `python manage.py runserver` (Should be running on **localhost:8000**)
 
-### 'Demo':
+### Examples ---
 
-REGISTRATION EXAMPLE
+REGISTRATION:
+
 ![Registration Gif](readme/registration.gif)
+
+AUTHENTICATION DIFFERENCES:
+
+![Authentication Changes Gif](readme/registration.gif)
+
+---
 
 > This site was made largely to experiment with and understand different aspects of the Django web framework and public API interaction, and thus not all best practices were adhered to. I welcome any input that could help optimize this codebase. Thank you.
