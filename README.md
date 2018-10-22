@@ -12,5 +12,6 @@
 - Django Framework
 - Bulma CSS Framework
 - Pytest & Coverage testing
+- Profile Images from [Random User Generator](https://randomuser.me/)
 
-> This site was made largely to experiment and understand different aspects of the Django framework and API interaction, and thus not all best practices were adhered to. I welcome any input that could help optimize this codebase. Thank you.
+> This site was made largely to experiment with and understand different aspects of the Django web framework and public API interaction, and thus not all best practices were adhered to. I welcome any input that could help optimize this codebase. Thank you.
