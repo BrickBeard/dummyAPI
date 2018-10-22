@@ -23,6 +23,8 @@
 5. `python manage.py migrate && python manage.py createsuperuser` (Follow the prompts)
 6. And you're good to go! `python manage.py runserver` (Should be running on **localhost:8000**)
 
+---
+
 ### Examples ---
 
 REGISTRATION:
