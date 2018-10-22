@@ -26,7 +26,20 @@
                         {% if form.errors %}
                         <p>There were errors found in this form. </p>
                         {% endif %}
-                        {{ form|bulma }}
+
+                        {% for field in form %}
+                        {% if 'password' in field.label_tag %}
+                        <div class="field">
+                            <label for="password1" class="label">{{ field.label }}*</label>
+                            <div class="control">
+                                {{ field }}
+                            </div>
+                        </div>
+                        {% else %}
+                        {{ field|bulma }}
+                        {% endif %}
+                        {% endfor %}
+                        <!-- {{ form|bulma }} -->
                         <br>
                         <div class="buttons is-centered">
                             <input type="submit" value="Register" class="button is-info">
