@@ -16,7 +16,7 @@
 
 ### To setup locally:
 
-1: Clone the repo to your local machine
+1: Clone the repo to your local machine••
 2: `cd dummyAPI`
 3: `python3 virtualenv venv` '''- virtualenv name is variable. Current python version is **3.6.1**'''
 4: Activate the virtual environment and then: `pip install -r requirements.txt`
