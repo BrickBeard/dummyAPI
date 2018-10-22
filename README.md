@@ -29,6 +29,8 @@ REGISTRATION:
 
 ![Registration Gif](readme/registration.gif)
 
+---
+
 AUTHENTICATION DIFFERENCES:
 
 ![Authentication Changes Gif](readme/diff%20users.gif)
