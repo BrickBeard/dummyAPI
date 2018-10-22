@@ -14,14 +14,14 @@
 - Pytest & Coverage testing
 - Profile Images from [Random User Generator](https://randomuser.me/)
 
-### To setup locally:
+## To setup locally:
 
-1: Clone the repo to your local machine
-2: `cd dummyAPI`
-3: `python3 virtualenv venv` '''- virtualenv name is variable. Current python version is **3.6.1**'''
-4: Activate the virtual environment and then: `pip install -r requirements.txt`
-5: `python manage.py migrate && python manage.py createsuperuser` (Follow the prompts)
-6: And you're good to go: `python manage.py runserver` (Should be running on localhost:8000)
+1. Clone the repo to your local machine
+2. `cd dummyAPI`
+3. `python3 virtualenv venv` '''- virtualenv name is variable. Current python version is **3.6.1**'''
+4. Activate the virtual environment and then: `pip install -r requirements.txt`
+5. `python manage.py migrate && python manage.py createsuperuser` (Follow the prompts)
+6. And you're good to go! `python manage.py runserver` (Should be running on localhost:8000)
 
 ---
 
