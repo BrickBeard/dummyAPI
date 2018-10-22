@@ -72,8 +72,13 @@ class AllEmployees(View):
 class FilteredEmployees(AllEmployees):
     def get(self, request, filter_by):
         url_path = request.path
-        results = sorted(
-            self.results, key=lambda e: e[f'employee_{filter_by}'])
+        if filter_by == 'name':
+            results = sorted(
+                self.results, key=lambda e: e[f'employee_{filter_by}'])
+        else:
+            results = sorted(self.results, key=lambda e: int(
+                float(e[f'employee_{filter_by}'])))
+
         context = {'url': url_path, 'results': results}
         return render(request, 'employees/index.html', context=context)
 
