@@ -28,20 +28,20 @@ class update_form(forms.Form):
 
 class UserRegisterForm(UserCreationForm):
     username = forms.CharField(label='Username*')
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
+    # first_name = forms.CharField(required=False)
+    # last_name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
 
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name",
-                  "email", "password1", "password2")
+        # "first_name", "last_name",
+        fields = ("username", "email", "password1", "password2")
 
     def save(self, commit=True):
         user = super(UserRegisterForm, self).save(commit=False)
         user.username = self.cleaned_data['username']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
+        # user.first_name = self.cleaned_data['first_name']
+        # user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
