@@ -31,7 +31,7 @@ REGISTRATION:
 
 AUTHENTICATION DIFFERENCES:
 
-![Authentication Changes Gif](readme/registration.gif)
+![Authentication Changes Gif](readme/diff%20users.gif)
 
 ---
 
