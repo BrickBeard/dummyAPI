@@ -29,16 +29,20 @@
                     </p>
                     {% endif %}
                     {% if messages %}
-                    {% for message in messages %}
-                    <p>{{ message }}</p>
-                    <br>
-                    {% if url == '/create/' %}
-                    <br>
-                    <a href="{% url 'index' %}" class="button is-info">
-                        Return
-                    </a>
-                    {% endif %}
-                    {% endfor %}
+                    <ul class="messages">
+                        {% for message in messages %}
+
+                        <li {% if message.tags %}class="{{ message.tags }}}" {% endif %}>{{ message }}</li>
+
+                        <br>
+                        {% if url == '/create/' %}
+                        <br>
+                        <a href="{% url 'index' %}" class="button is-info">
+                            Return
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
                     {% endif %}
                     {% if form %}
                     <form method="POST">
@@ -155,6 +159,7 @@
                             </div>
                         </article>
                     </div>
+
                 </div>
             </div>
         </div>

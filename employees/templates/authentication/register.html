@@ -15,9 +15,7 @@
                 <div class="column is-offset-3 is-6 has-text-centered" id="form_column">
                     {% if messages %}
                     {% for message in messages %}
-                    <br>
-                    <p>{{ message }}</p>
-                    <hr>
+                    <p>---- {{ message }} ----</p>
                     {% endfor %}
                     {% endif %}
                     <form method="POST" action="{% url 'register' %}" class="auth_form">

@@ -20,8 +20,8 @@ def index(request):
         if form.is_valid():
             query = request.POST['search_query'].lower().strip()
             for employee in all_employees:
-                for (key, value) in employee.items():
-                    if query in value.lower():
+                for (k, v) in employee.items():
+                    if query in v.lower():
                         results.append(employee)
             if results == []:
                 messages.warning(
@@ -109,7 +109,6 @@ class FilteredEmployees(AllEmployees):
 #     return render(request, 'employees/index.html', context)
 
 
-@login_required
 def createForm(request):
     if not request.user.is_authenticated:
         messages.warning(
@@ -154,7 +153,6 @@ def createForm(request):
         return render(request, 'employees/index.html', context)
 
 
-@login_required
 def updateForm(request, id):
     if not request.user.is_authenticated:
         messages.warning(
@@ -224,18 +222,28 @@ def register(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
             form = UserRegisterForm(request.POST)
+            print(f"Password1: {form['password1'].value()}")
+            print(f"Password2: {form['password2'].value()}")
             if form.is_valid():
                 form.save()
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password1']
-                user = authenticate(username=username, password=password)
-                login(request, user)
-                messages.success(
-                    request, f'Thanks for joining us {username}.  You can now create, update, and delete employees.', fail_silently=True,)
+                print(password)
+                if password != form.cleaned_data['password2']:
+                    messages.warning(
+                        request, 'Passwords do not match.  Please try again.', fail_silently=True,)
+                else:
+                    user = authenticate(username=username, password=password)
+                    login(request, user)
+                    messages.success(
+                        request, f'Thanks for joining us {username}!  You can now create, update, and delete employees.', fail_silently=True,)
                 return redirect('index')
+            elif form['password1'].value() != form['password2'].value():
+                messages.warning(
+                    request, 'Passwords do not match.  Please try again.', fail_silently=True,)
             else:
                 messages.warning(
-                    request, 'Invalid input.  Please try again.', fail_silently=True,)
+                    request, 'Please enter a valid password (See below).', fail_silently=True,)
         form = UserRegisterForm()
         url = request.path
         context = {'form': form, 'url': url}
@@ -246,10 +254,10 @@ def register(request):
 
 
 def loginForm(request):
-    # if request.user.is_authenticated():
-    #     messages.success(
-    #         request, 'You are already logged in!', fail_silently=True,)
-    #     return redirect('index')
+    if request.user.is_authenticated:
+        messages.success(
+            request, 'You are already logged in!', fail_silently=True,)
+        return redirect('index')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
