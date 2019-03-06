@@ -1,6 +1,6 @@
 # Dummy API App: Test Application for a public rest API
 
-[![Website](https://img.shields.io/badge/website-live-brightgreen.svg?style=flat-square)](https://dummyapi18.herokuapp.com/) [![built-with-Django](https://img.shields.io/badge/Built%20With-Django%202.1.2-orange.svg?style=flat-square)](https://www.djangoproject.com/) [![CSS-Bulma](https://img.shields.io/badge/CSS-Bulma-blue.svg?style=flat-square)](https://bulma.io/)
+[![Website](https://img.shields.io/badge/website-live-brightgreen.svg?style=flat-square)](https://dummyapi18.herokuapp.com/) [![built-with-Django](https://img.shields.io/badge/Built%20With-Django%202.1.7-orange.svg?style=flat-square)](https://www.djangoproject.com/) [![CSS-Bulma](https://img.shields.io/badge/CSS-Bulma-blue.svg?style=flat-square)](https://bulma.io/)
 
 **dummyAPI** is a test app project to practice consuming and manipulating a public example API: **[Dummy API Example](http://dummy.restapiexample.com/)**.
 
